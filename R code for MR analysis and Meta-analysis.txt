@@ -1,0 +1,31 @@
+## MR analyses
+library(TwoSampleMR)
+psy=c("ukb-d-20552_2", "ukb-d-20415","ebi-a-GCST003724","ieu-a-801","ieu-b-41","ieu-b-5110","ieu-a-1189","ebi-a-GCST90018919","ieu-b-5102","ieu-b-42","finn-b-F5_SCHIZO","finn-b-F5_SCHZPHR","finn-b-KRA_PSY_SCHIZODEL","finn-b-KRA_PSY_SCHIZODEL_EXMORE","ukb-a-241","ukb-b-14147","ebi-a-GCST90013958","ebi-a-GCST006810")
+toxo=c("ebi-a-GCST90006925", "ieu-b-4910")
+for (exp in toxo)
+{
+    for (outcome in psy)
+    {# Get instruments
+    exp.toxo = extract_instruments(outcomes=exp, p1 = 1e-05, clump = T, p2 = 5e-08, r2 = 0.001, kb = 10000)
+    # Get effects of instruments on outcome
+    output.toxo = extract_outcome_data(snps=exp.toxo$SNP, outcomes=outcome, proxies = FALSE, maf_threshold = 0.01)
+    # Harmonise the exposure and outcome data
+    harmony.toxo =  harmonise_data(exposure_dat=exp.toxo, outcome_dat=output.toxo, action= 3)
+    # Perform MR
+    mr_result=mr(harmony.toxo, method_list=c("mr_ivw","mr_egger_regression", "mr_weighted_median",'mr_weighted_mode','mr_egger_regression_bootstrap'))
+    #Outliers detection    
+    outdet=run_mr_presso(harmony.toxo,SignifThreshold = 0.05,NbDistribution = 1000)
+    run_mr_presso(harmony.toxo,SignifThreshold = 0.05, NbDistribution = 1000)
+    #Save MR results
+    write.table(mr_result, paste("./",exp,"to",outcome,".txt"))
+    }
+}
+
+## Meta analysis
+mr3=read.table("./3.bipolar_disorder.txt", header = T)
+library(metafor)
+## Fixed-effect model
+model.re = rma(yi=beta, sei = se, data=mr3[c(1,2,4),], method = "FE")
+summary(model.re)
+predict(model.re, digits = 4)
+
