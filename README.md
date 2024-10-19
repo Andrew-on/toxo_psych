@@ -7,9 +7,7 @@ The entire data analysis consists of two parts: the first part involves conducti
 
 All summary-level GWAS datasets are openly accessible from the website (https://gwas.mrcieu.ac.uk/) mentioned in the main paper (Method section). Four methods for estimating causal effects were employed in our research, with the IVW method providing the primary outcome in this paper.
 
-|                                   | **Phenotype/Trait**                 | **GWAS ID**        | **Consortium** | **Sample Size** | **Number of SNPs** | **PubMed ID/**
-
-**Author** |
+| **Phenotype/Trait**                 | **GWAS ID**        | **Consortium** | **Sample Size** | **Number of SNPs** | **PubMed ID/Author** |
 | --------------------------------- | ----------------------------------- | ------------------ | -------------- | --------------- | ------------------ | -------------------------- |
 | Exposure: Toxoplasmosis Infection |
 |                                   | Anti-_T. gondii_ IgG Seropositivity | ebi-a-GCST90006925 | UKB/IEU        | 8,735           | 9,170,312          | 33204752                   |
